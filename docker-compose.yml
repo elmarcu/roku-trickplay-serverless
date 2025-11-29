@@ -1,0 +1,44 @@
+version: "3.8"
+
+services:
+  localstack:
+    image: localstack/localstack:latest
+    ports:
+      - "4566:4566"
+    environment:
+      - SERVICES=s3,cloudfront,sqs,cloudwatch
+      - DEBUG=1
+      - DATA_DIR=/tmp/localstack/data
+    volumes:
+      - ./localstack-init.sh:/docker-entrypoint-initaws.d/init.sh
+      - localstack_data:/tmp/localstack
+
+  trick-play-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - AWS_REGION=us-east-1
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+      - AWS_ENDPOINT_URL=http://localstack:4566
+      - AWS_S3_BUCKET=trick-play-bucket
+      - AWS_CLOUDFRONT_DISTRIBUTION_ID=E123ABC456
+      - THUMBNAIL_INTERVAL=10
+      - THUMBNAIL_WIDTH=320
+      - THUMBNAIL_HEIGHT=180
+      - THUMBNAIL_BIG_WIDTH=640
+      - THUMBNAIL_BIG_HEIGHT=360
+      - SQS_MANIFEST_QUEUE_URL=http://localstack:4566/000000000000/manifest-queue
+      - SQS_CACHE_INVALIDATION_QUEUE_URL=http://localstack:4566/000000000000/invalidation-queue
+      - ENABLE_SLACK_NOTIFICATIONS=False
+    volumes:
+      - .:/app
+    depends_on:
+      - localstack
+    command: python local-dev-server.py
+
+volumes:
+  localstack_data:
