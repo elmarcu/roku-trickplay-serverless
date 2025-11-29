@@ -1,3 +1,5 @@
+# WORK IN PROGRESS - LOCAL DEV ENV
+
 # Roku Trick Play - Serverless Edition
 
 Generate trick play thumbnails for Roku streaming applications using AWS Lambda, S3, and CloudFront.
