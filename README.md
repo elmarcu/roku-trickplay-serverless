@@ -294,10 +294,6 @@ Ensure:
 - Paths are properly formatted (e.g., `/path/to/file.m3u8`)
 - CloudFront has cache behavior for the paths
 
-## Contributing
-
-See [CONTRIBUTING.md](CONTRIBUTING.md)
-
 ## License
 
-MIT License - See [LICENSE](LICENSE)
+MIT — free to use and extend.
